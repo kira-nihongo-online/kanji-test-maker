@@ -59,6 +59,14 @@ let dataA = [];
 let dataB = [];
 let index = 0;
 
+// URLパラメータ（?lesson=21）
+const lesson =
+  new URLSearchParams(location.search).get("lesson") || 1;
+
+// Apps Script API
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyaAxNzUzCZCQmwpcWpMantJdlzlUDFPLzh3QKOgOdoDv03ls1kNoxA81aSYeZ1PIgsLQ/exec";
+
 function makeImageUrl(id){
   return "https://drive.google.com/thumbnail?id=" + id + "&sz=w1000";
 }
@@ -117,6 +125,15 @@ dataB = [
 draw();
 
 setInterval(next, 2000);
+
+fetch(API_URL + "?lesson=" + lesson + "&mode=json")
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
 
 </script>
 
