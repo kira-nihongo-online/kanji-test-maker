@@ -44,11 +44,49 @@ body{
   margin-top:20px;
 }
 
+.header{
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  border-bottom:2px solid #ddd;
+  box-sizing:border-box;
+}
+
+.logo{
+  height:40px;
+}
+
+.title{
+  flex:1;
+  font-size:28px;
+  font-weight:bold;
+  margin-left:15px;
+}
+
+.lesson{
+  font-size:24px;
+  font-weight:bold;
+}
+
 </style>
 
 </head>
 
 <body>
+
+<header class="header">
+
+  <img src="トータルロゴ.png" class="logo">
+
+  <div class="title">
+    漢字テストメーカー
+  </div>
+
+  <div class="lesson" id="lessonTitle"></div>
+
+</header>
 
 <div class="panel" id="A"></div>
 <div class="panel" id="B"></div>
@@ -62,6 +100,11 @@ let index = 0;
 // URLパラメータ（?lesson=21）
 const lesson =
   new URLSearchParams(location.search).get("lesson") || 1;
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("lessonTitle").textContent =
+    "Lesson " + lesson;
+});
 
 // Apps Script API
 const API_URL =
