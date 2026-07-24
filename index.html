@@ -73,6 +73,11 @@ function makeImageUrl(id){
 
 function draw(){
 
+  // データがまだ読み込まれていない場合は何もしない
+  if(dataA.length === 0 || dataB.length === 0){
+    return;
+  }
+
   if(index >= dataA.length){
     index = 0;
   }
@@ -112,24 +117,17 @@ google.script.run
 .getSavedTestSet(lesson);
 */
 
-dataA = [
-  { id: "1EErLVk4HEbOjVrBnuMieppejwZHayIxC" },
-  { id: "1iKe0Jq7ILiJ9e7aZC2cnx1RPqSmhMosJ" } 
-];
-
-dataB = [
-  { id: "1iKe0Jq7ILiJ9e7aZC2cnx1RPqSmhMosJ" },
-  { id: "1EErLVk4HEbOjVrBnuMieppejwZHayIxC" }
-];
-
-draw();
-
-setInterval(next, 2000);
-
 fetch(API_URL + "?lesson=" + lesson + "&mode=json")
   .then(response => response.json())
   .then(data => {
-    console.log(data);
+
+    dataA = data.A;
+    dataB = data.B;
+
+    draw();
+
+    setInterval(next, 20000);
+
   })
   .catch(error => {
     console.error(error);
