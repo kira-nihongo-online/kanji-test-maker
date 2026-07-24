@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+body{
+  margin:0;
+  display:flex;
+  height:100vh;
+}
+
+.panel{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 中央の区切り線 */
+.panel:first-child{
+  border-right:4px solid #ccc;
+}
+
+/* 画像カード */
+.card{
+  width:90%;
+  height:60%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.label{
+  font-size:30px;
+  margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="panel" id="A"></div>
+<div class="panel" id="B"></div>
+
+<script>
+
+let dataA = [];
+let dataB = [];
+let index = 0;
+
+function makeImageUrl(id){
+  return "https://drive.google.com/thumbnail?id=" + id + "&sz=w1000";
+}
+
+function draw(){
+
+  if(index >= dataA.length){
+    index = 0;
+  }
+
+  const urlA = makeImageUrl(dataA[index].id);
+  const urlB = makeImageUrl(dataB[index].id);
+
+  document.getElementById("A").innerHTML =
+    '<div class="card"><img src="'+urlA+'"></div>' +
+    '<div class="label">A.' + (index+1) + '</div>';
+
+  document.getElementById("B").innerHTML =
+    '<div class="card"><img src="'+urlB+'"></div>' +
+    '<div class="label">B.' + (index+1) + '</div>';
+
+}
+
+function next(){
+  index++;
+  draw();
+}
+
+const lesson = <?= lesson ?>;
+
+google.script.run
+.withSuccessHandler(function(data){
+
+  dataA = data.A;
+  dataB = data.B;
+
+  draw();
+
+  setInterval(next,20000);
+
+})
+.getSavedTestSet(lesson);
+
+</script>
+
+</body>
+</html>
